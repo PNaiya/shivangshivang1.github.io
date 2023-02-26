@@ -1,0 +1,77 @@
+Three-Card High-CardConsider a very simple card game we will call Three-Card High-Card. In this game, each player is dealt three cards. The player with the highest card wins. If there is a tie for the highest card, the player with the second highest card wins. If a tie for the two highest cards, the tie is broken by the third, lowest card. Cards are ranked according to common Ace-high ordering and suits are not considered in ranking.Using the inheritance mechanism in C++, create a class called ThreeCardHand that used Hand as its base class (use the cards library that was developed in class, which is included in the starter code for this project). Your inherited class will need some way of ranking the objects so that they can be compared to determine which is the winner (similar to the rank method we included for the Card class).Once you have build your ThreeCardHand class, write a main function that simulates 5 rounds of this game between two players from the same deck without shuffling, then shuffles the deck bring it back to 52 cards, then simulates 5 rounds of the game again. Each game simulation should show both hands, then show the hand of the winner. Format your output like the sample output shown below.Sumulating 10 games of Three-Card High-Card.
+Game 1 4S-7C-7H vs TS-8S-2C - Winner is TS-8S-2C
+Game 2 2H-QS-3S vs 9D-5D-5C - Winner is 2H-QS-3S
+Game 3 QC-KD-9H vs 6C-4H-6H - Winner is QC-KD-9H
+Game 4 JH-3D-8D vs AD-2D-4D - Winner is AD-2D-4D
+Game 5 QD-KS-4C vs TC-6D-TH - Winner is QD-KS-4C
+Shuffling...
+Game 6 TH-2C-JH vs 3S-TD-TC - Winner is TH-2C-JH
+Game 7 6C-7H-TS vs JC-9C-AC - Winner is JC-9C-AC
+Game 8 4D-5H-9D vs 6S-2D-5C - Winner is 4D-5H-9D
+Game 9 4H-JD-4C vs JS-QD-8S - Winner is JS-QD-8S
+Game 10 QH-9H-3C vs AS-AH-KH - Winner is AS-AH-KH
+There should be no need to modify cards.h or cards.cpp for this project. You may, at your option, implement this new class in its own header and implementation file, or in main.cpp.Ranking HintIn order to compare hands you will need some basis of comparison, similar to the rank method implemented for the Card class. You might calculate a rank by taking the rank of the highest card times 10000, the rank of the middle card times 100, and the rank of the lowest card, and adding those three values together.
+
+
+
+
+CODE WITH ERROR
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "cards.h"
+
+using namespace std;
+
+class ThreeCardHand : public Hand {
+public:
+    int rank() const {
+        vector<Card> cards = getCards();
+        sort(cards.begin(), cards.end());
+        int r = cards[2].rank() * 10000 + cards[1].rank() * 100 + cards[0].rank();
+        return r;
+    }
+};
+
+int main() {
+    Deck deck;
+    cout << "Simulating 10 games of Three-Card High-Card." << endl;
+    for (int i = 1; i <= 10; i++) {
+        ThreeCardHand hand1, hand2;
+        hand1.addCard(deck.dealCard());
+        hand1.addCard(deck.dealCard());
+        hand1.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        cout << "Game " << i << " " << hand1.toString() << " vs " << hand2.toString() << " - ";
+        if (hand1.rank() > hand2.rank()) {
+            cout << "Winner is " << hand1.toString() << endl;
+        } else if (hand2.rank() > hand1.rank()) {
+            cout << "Winner is " << hand2.toString() << endl;
+        } else {
+            cout << "Tie game" << endl;
+        }
+    }
+    deck.shuffle();
+    cout << "Shuffling..." << endl;
+    for (int i = 1; i <= 10; i++) {
+        ThreeCardHand hand1, hand2;
+        hand1.addCard(deck.dealCard());
+        hand1.addCard(deck.dealCard());
+        hand1.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        hand2.addCard(deck.dealCard());
+        cout << "Game " << i << " " << hand1.toString() << " vs " << hand2.toString() << " - ";
+        if (hand1.rank() > hand2.rank()) {
+            cout << "Winner is " << hand1.toString() << endl;
+        } else if (hand2.rank() > hand1.rank()) {
+            cout << "Winner is " << hand2.toString() << endl;
+        } else {
+            cout << "Tie game" << endl;
+        }
+    }
+    return 0;
+}
